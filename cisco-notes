@@ -1,5 +1,5 @@
 !the big commit test.. does it work?
-
+!testing atom integration
 !use tclsh
 !    foreach i{a.b.c.d}{ping $i}
 enable

@@ -1,7 +1,9 @@
-!the big commit test.. does it work?
-!testing atom integration
+
+!How to verify your packet tracers in the future
 !use tclsh
 !    foreach i{a.b.c.d}{ping $i}
+!
+!
 enable
 configure terminal
 banner motd #Warning#

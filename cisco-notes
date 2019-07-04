@@ -1,4 +1,7 @@
 !the big commit test.. does it work?
+
+!use tclsh
+!    foreach i{a.b.c.d}{ping $i}
 enable
 configure terminal
 banner motd #Warning#
@@ -33,7 +36,7 @@ version 2
   !sets rip to version 2
 no auto-summary
   !turns off route summarization
-network IP.add.re.ss
+network a.b.c.d
   !network statement format
 default-information originate
   !shares information about the default route

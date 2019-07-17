@@ -19,9 +19,6 @@ no ip domain-lookup
 enable secret class
 service password-encryption
 
-
-
-
 !! Configure an IPV4 interface (config-if)
 interface g0/0
 ip address 192.168.0.1 255.255.255.0
@@ -48,9 +45,6 @@ passive-interface G0/0
 !! Default Route
 ip route 0.0.0.0 0.0.0.0 s0/0/1
 
-
-
-
 !! Configure an ipv6 interface  (config-if)
 ipv6 address 2001:db8:acad:a::1/64
 ipv6 address fe80::1 link-local
@@ -63,7 +57,14 @@ ipv6 unicast-routing
 ip domain-name yourname
 
 !!  SSH key creation (config)
+crypto key generate rsa
 crypto key generate rsa general-keys modulus 1024
+!! RSA key deletion (config)
+crypto key zeroize rsa
+!! get SSH info
+show ip ssh
+!! set ssh version
+ip ssh version 2
 
 !!  Add a user  (use 0 for pt password 5 for encrypted password)
 username administrator secret 0 cisco
@@ -75,13 +76,48 @@ no password
 login local
 transport input ssh
 
+!!  SWITCH                          ############ CHAPTER 5 ################
+!! configure Duplex and speed (config-if)#
+duplex full
+speed 100
+end
+!! configure auto-MDIX (config-if)#
+duplex auto
+speed auto
+mdix auto
+end
+!!Verification commands #
+show interfaces [int-id]
+show startup-config
+show running-config
+show flash
+show version
+show history
+sho ip [int-id]
+show mac-address-table
+
+
 !!  Port Security (config-if)
 switchport mode access
 switchport port-security
 switchport port-security maximum 1
 switchport port-security mac-address sticky
 
-!! VLAN
+!! Security violation modes
+!! protect - packets are dropped with no notification
+switchport port-security violation protect
+!! restrict - violation counter+packets are dropped with syslog notification
+switchport port-security violation restrict
+!! default- violation counter+, port shutsdown need to be manually no shut
+switchport port-security violation shutdown
+
+!!Verify Port Security Settings
+show port-security interface [int-id]
+show running-config
+show port-security address
+
+
+!! VLANs                  ###########CHAPTER 6##############
 show vlan brief 
 !! (config)
 vlan vlan-id

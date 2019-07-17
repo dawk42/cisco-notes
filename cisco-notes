@@ -155,3 +155,21 @@ and peer ports match  ---YES--->  and peer ports compatible  --YES--> Operationa
  |           V               L__ Statically configure
  L__Change native VLAN           ports on both devices 
                                  to trunk
+
+
+!! Router on a Stick (config)#
+int g0/0.10
+encapsulation dot1q 10
+ip address a.b.c.d w.x.y.z
+int g0/0.30
+encapsulation dot1q 30
+ip address a.b.c.d w.x.y.z
+interface g0/0
+no shutdown
+
+!!Router On a Stick  verify #
+show vlan
+show ip route
+
+
+

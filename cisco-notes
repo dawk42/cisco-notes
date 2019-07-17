@@ -80,3 +80,78 @@ switchport mode access
 switchport port-security
 switchport port-security maximum 1
 switchport port-security mac-address sticky
+
+!! VLAN
+show vlan brief 
+!! (config)
+vlan vlan-id
+!! (config-vlan)
+name vlan-name
+end
+!! create Multiple VLANs
+vlan 100,102,105-107
+!!VLAN port assignment (config-if)
+switchport mode access
+switchport access vlan 20
+mls qos trust cos |device cisco-phone | dscp | ip-precedence
+switchport voice vlan 150
+end
+
+!! removing vlan assignments (config-if)
+no switchport access vlan
+end
+
+!! Deleting VLANs(config)
+no vlan 20
+end
+
+!! delete the vlan.dat (#)
+delete flash:vlan.dat
+!! or
+delete vlan.dat
+
+!! Verifying VLAN Info
+show vlan name student
+show vlan summary
+show interfaces vlan 20
+
+!! Trunk Configuration (config-if)
+switchport mode trunk
+switchport trunk native vlan 99
+switchport trunk allowed vlan 10,20,30,99
+end
+
+!! Resetting Configured Values on Trunk Links (config-if)
+no switchport trunk allowed vlan
+no switchport trunk native vlan
+end
+
+!! Verifying Trunk Configuration (#)
+show interfaces f0/1 switchport
+
+!!Missing VLANs
+show vlan                           show vlan   
+show mac address-table              show interfaces
+                                    show interfaces swichport
+
+Is port in correct VLAN?  --YES-->  VLAN in VLAN DB? --YES--> Verify connections in VLAN
+ ^           |               ^              |
+ |           No              |             No
+ |           |               |              V
+ |           V               L__ Make VLAN in VLAN DB
+ L__Assign port to VLAN
+ 
+ !! Verifying Trunk Configuration (#)
+show interfaces f0/1 switchport
+
+!!Troubleshooting Trunks
+show interfaces trunk               show interfaces trunk   
+
+Native VLAN on local              Trunk modes on local
+and peer ports match  ---YES--->  and peer ports compatible  --YES--> Operational 
+ ^           |               ^              |
+ |           No              |             No
+ |           |               |              V
+ |           V               L__ Statically configure
+ L__Change native VLAN           ports on both devices 
+                                 to trunk

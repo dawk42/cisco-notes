@@ -118,7 +118,7 @@ show port-security address
 
 
 !! VLANs                  ###########CHAPTER 6##############
-show vlan brief 
+show vlan brief
 !! (config)
 vlan vlan-id
 !! (config-vlan)
@@ -153,6 +153,7 @@ show interfaces vlan 20
 
 !! Trunk Configuration (config-if)
 switchport mode trunk
+switchport non
 switchport trunk native vlan 99
 switchport trunk allowed vlan 10,20,30,99
 end
@@ -166,7 +167,7 @@ end
 show interfaces f0/1 switchport
 
 !!Missing VLANs
-show vlan                           show vlan   
+show vlan                           show vlan
 show mac address-table              show interfaces
                                     show interfaces swichport
 
@@ -176,20 +177,20 @@ Is port in correct VLAN?  --YES-->  VLAN in VLAN DB? --YES--> Verify connections
  |           |               |              V
  |           V               L__ Make VLAN in VLAN DB
  L__Assign port to VLAN
- 
+
  !! Verifying Trunk Configuration (#)
 show interfaces f0/1 switchport
 
 !!Troubleshooting Trunks
-show interfaces trunk               show interfaces trunk   
+show interfaces trunk               show interfaces trunk
 
 Native VLAN on local              Trunk modes on local
-and peer ports match  ---YES--->  and peer ports compatible  --YES--> Operational 
+and peer ports match  ---YES--->  and peer ports compatible  --YES--> Operational
  ^           |               ^              |
  |           No              |             No
  |           |               |              V
  |           V               L__ Statically configure
- L__Change native VLAN           ports on both devices 
+ L__Change native VLAN           ports on both devices
                                  to trunk
 
 
@@ -206,6 +207,3 @@ no shutdown
 !!Router On a Stick  verify #
 show vlan
 show ip route
-
-
-

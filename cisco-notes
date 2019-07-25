@@ -207,3 +207,63 @@ no shutdown
 !!Router On a Stick  verify #
 show vlan
 show ip route
+
+!             CHAPTER 7 ACL
+!
+! Access List (config)
+! any host
+access-list 1 permit 0.0.0.0 255.255.255.255
+!or
+access-list 1 permit any
+
+! one host
+access-list 1 permit 192.168.10.10 0.0.0.0
+!or
+access-list 1 permit host 192.168.10.10
+
+! Configuring Standard ACL's
+access-list 1 permit 192.168.10.0 0.0.0.255
+interface serial 0/0/0
+ip access-group 1 out
+
+! Deny a Specific Host and Permit a Specific Subnet (config)
+no access-list 1
+access-list 1 deny host 192.168.10.10
+access-list 1 permit 192.168.10.0 0.0.0.255
+interface S0/0/0
+ip access-group 1 out
+
+!! (Method 1) To edit an ACL you must remove it with
+no access-list 1
+!! Then reenter the ACL you may want to copy the previous version from
+!! Running-configuration and edit in a text editor
+
+!! (Method 2) Edit with sequence numbers
+show access-lists 1
+!!enter the ACL
+ip access-lists standard 1
+!! remove the line number with the error
+no 10
+10 deny host 192.168.10.10
+!! verify your work
+show access-lists
+
+!! Adding a Line to a Named ACL
+show access-lists
+cont t
+ip access-list NO_ACCESS
+15 deny host 192.168.11.11
+end
+show access-lists
+!! The no sequence-number is used to delete individual statements
+!! Use show ip interface   to verify ACL on interface
+!! show access-lists    will also show statistics
+
+! Securing VTY with ACL
+line vty 0 4
+login local
+transport ssh
+access-class 21 in
+exit
+access-list 21 permit a.b.c.d r.s.n.m
+access-list 21 deny any

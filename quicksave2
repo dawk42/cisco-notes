@@ -1,0 +1,13 @@
+VM's in Azure are modeled similarly to Hyper-V
+  Use VHD's
+  Virtual Network's
+
+VM's are billed by tier
+  the higher the tier the more cpu/ram/storage .. and the more cost
+
+Can create vms from templates
+
+To capture a Windows VM in the Resource Manager model, you will use Azure PowerShell, the Azure
+CLI, or the Azure Resource Explorer tool. Capturing a VM is not yet possible in the Azure portal.
+
+VM's can Scale

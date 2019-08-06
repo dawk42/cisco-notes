@@ -272,10 +272,10 @@ access-list 21 deny any
 
 !!                         ###  Chapter 8  DHCP   ###
 !!  Exclude ipv4 addresses (config)
-ip dhcp exclude-address 192.168.10.1 192.168.10.9
-ip dhcp exclude-address 192.168.10.254
-ip dhcp exclude-address 192.168.11.1 192.168.10.9
-ip dhcp exclude-address 192.168.11.254
+ip dhcp excluded-address 192.168.10.1 192.168.10.9
+ip dhcp excluded-address 192.168.10.254
+ip dhcp excluded-address 192.168.11.1 192.168.10.9
+ip dhcp excluded-address 192.168.11.254
 ip dhcp pool LAN-POOL-1
 !!(dhcp-config)
 network 192.168.10.0 255.255.255.0
@@ -338,3 +338,60 @@ ipv6 nd managed-config-flag
 interface g0/1
 ipv6 enable
 ipv6 address dhcp
+
+
+!!!                     ####CHAPTER 9####                          !!
+!! Verify static NAT translations
+!  show ip nat translations
+!  show ip nat statistics
+!
+!  Server    Inside Network   |   Outside Network   Client
+!IP  <-----------Static NAT Translation --------->  IP
+!
+!
+!! Configure Static NAT  (config)
+ip nat inside source static {local-ip} {global-ip}
+interface F0/1    <--- inside router interface
+ip nat inside
+exit
+interface G0/1    <--- outside interface
+ip nat outside
+exit
+
+!! Configure Dynamic NAT
+ip nat pool {name} {start-ip} {end-ip} netmask {netmask}
+access-list {acl number} permit {source} {r.s.n.m}
+ip nat inside source list {access-list-number} pool {name}
+interface F0/1    <--- inside router interface
+ip nat inside
+exit
+interface G0/1    <--- outside interface
+ip nat outside
+exit
+!! Verify dynamic NAT translations
+! show ip nat translations
+! show ip nat translations verbose
+! ip nat translation timeout {time out seconds}
+! clear ip nat translation
+! show ip nat statistics
+
+!! Configure PAT Address Pool
+ip nat pool {name} {start-ip} {end-ip} netmask {netmask}
+access-list {alc number} permit {source} {r.s.n.m}
+ip nat inside source list {access-list-number} pool {name} overload
+interface f0/1
+ip nat inside
+exit
+interface g0/1
+ip nat ouside
+exit
+
+!! Configure PAT Single Address
+access-list {alc number} permit {source} {r.s.n.m}
+ip nat inside source list {access-list-number} interface {G0/1} overload
+interface f0/1
+ip nat inside
+exit
+interface g0/1
+ip nat ouside
+exit

@@ -3,33 +3,77 @@
 !use tclsh
 !    foreach i{a.b.c.d}{ping $i}
 !
-
+!!!        ####  CHAPTER 1   ####
 !! Basic Security
 enable
 configure terminal
-banner motd #Warning#
+hostname {devicename}
+enable secret class
+no ip domain-lookup
+service password-encryption
+
 line console 0
 password cisco
 login
-line vty 0 4
+line vty 0 15
 password cisco
 login
 exit
-no ip domain-lookup
-enable secret class
-service password-encryption
+banner motd #Warning#
+
+
+
 
 !! Configure an IPV4 interface (config-if)
 interface g0/0
 ip address 192.168.0.1 255.255.255.0
 description R1 Link to PC-B
 no shutdown
+!
 interface g0/1
 ip address 192.168.1.1 255.255.255.0
 description R1 Link to S1
 no shutdown
 end
 write memory
+!
+!! Configure Serial 0/0/0 interface
+interface serial 0/0/0
+description {words}
+ip address {ip}{snm}
+clock rate 128000
+no shutdown
+exit
+!! Configure IPV6 interface
+interface G0/0
+description Link to Lan 1
+ipv6 address 2001:db8:acad:1::1/64
+no shutdown
+exit
+!!Configure Loopback0 interface
+interface loopback0
+ip address {ip}{snm}
+exit
+!
+!!Verify Interface settings (IPV4)
+show ip interface brief
+show ip route
+show running config interface g0/1
+!
+!!Verify Interface settings (IPV6)
+show ipv6 interface brief
+show ipv6 interface g0/0
+show ipv6 route
+show running config interface g0/1
+!
+!! Filtering Show Command Output
+show running-config | section line vty
+
+pipe (|)  to section, include, exclude, begin
+
+!! Command History Feature
+terminal history size 200   (default is 10)
+show history
 !
 
 !!  RIP settings (config)

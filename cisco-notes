@@ -76,6 +76,31 @@ terminal history size 200   (default is 10)
 show history
 !
 
+!! Routing Table
+!!Static routes
+ip route {network ip} {snm} {next-hop-ip or exit-intf}
+ipv6 route {ipv6 address} {next-hop-ipv6 or exit-intf}
+!! Gateway of Last resort (config)
+ip route 0.0.0.0 0.0.0.0 {interface}
+! ipv6 default route
+ipv6 route ::/0 {interface}
+
+!Listing ipv4 routing Protocols
+router ?
+!Listing ipv6 routing Protocols
+ipv6 router ?
+!
+!! to enable IPV6 routers to fwd traffic
+ipv6 unicast-routing
+!
+
+!!!       ####  CHAPTER 2: Static Routing   ####        !!!
+Next-hop route::                   Only the next-hop IP is specified
+Directly connected static route::  Only the router exit interface is specified
+Fully specified statid route::     The next-hop IP address and exit interface are specified
+
+
+
 !!  RIP settings (config)
 router rip
 version 2

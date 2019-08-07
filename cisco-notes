@@ -58,6 +58,7 @@ exit
 !!Verify Interface settings (IPV4)
 show ip interface brief
 show ip route
+show ip route static
 show running config interface g0/1
 !
 !!Verify Interface settings (IPV6)
@@ -95,24 +96,40 @@ ipv6 unicast-routing
 !
 
 !!!       ####  CHAPTER 2: Static Routing   ####        !!!
-Next-hop route::                   Only the next-hop IP is specified
-Directly connected static route::  Only the router exit interface is specified
-Fully specified statid route::     The next-hop IP address and exit interface are specified
+!!Next-hop route::                   Only the next-hop IP is specified
+ip route {network} {snm} {next-hop ip}
+ip route 2001:DB8:ACAD:2::/64 2001:db8:ACAD:4::2
+!
+!!Directly connected static route::  Only the router exit interface is specified
+ip route {network} {snm} {exit-interface}
+ipv6 route 2001:db8:acad:2::/64 s0/0/0
+!
+!!Fully specified statid route::     The next-hop IP address and exit interface are specified
+ip route {network} {snm} {exit-interface} {next-hop ip}
+ipv6 route 2001:db8:acad:2::/64 s0/0/0 fe80:2
+
+!!Floating Static route
+ip route 0.0.0.0 0.0.0.0 {link 1 ip}
+ip route 0.0.0.0 0.0.0.0 {link 1 ip} {admin distance}
 
 
+!!!       ####  CHAPTER 3: Dynamic Routing   ####        !!!
 
 !!  RIP settings (config)
+shwo ip protocols
+
 router rip
 version 2
 no auto-summary
 network a.b.c.d
-default-information originate
+
 passive-interface G0/0
   !turns off route advertising on interface  G0/0
   !use on interfaces that are not connected to routers
 
 !! Default Route
 ip route 0.0.0.0 0.0.0.0 s0/0/1
+default-information originate
 
 !! Configure an ipv6 interface  (config-if)
 ipv6 address 2001:db8:acad:a::1/64
@@ -122,30 +139,33 @@ exit
 !! Enable ipv6 routing (config)
 ipv6 unicast-routing
 
+!!!       ####  CHAPTER 4: Switched Networks   ####        !!!
+Core Layer
+Distribution Layer
+Access Layer
+
+Store-and-Forward:
+the store-and-forward method makes a forwarding decision on a frame
+after it has received the entire frame and checked the frame for
+errors using a mathematical error-checking mechanism known as a
+cyclic redundancy check (CRC)
+
+Cut Through:
+begins the forwarding process after the destination MAC address of
+an incoming frame and the egress port has been determined
+
 !! Set domain name (config)
 ip domain-name yourname
 
-!!  SSH key creation (config)
-crypto key generate rsa
-crypto key generate rsa general-keys modulus 1024
-!! RSA key deletion (config)
-crypto key zeroize rsa
-!! get SSH info
-show ip ssh
-!! set ssh version
-ip ssh version 2
+!!!       ####  CHAPTER 5: Switch Configuration  ####        !!!
 
-!!  Add a user  (use 0 for pt password 5 for encrypted password)
-username administrator secret 0 cisco
-username administrator privilege 15 secret 0 cisco
+!! Configure Switch Management Interface (config)
+interface vlan 99
+ip address {ip}{snm}
+no shutdown
+!! Configure Switch Default Gateway (config)
+ip default-gateway {ip}
 
-!!  Set Line 0 4 to use SSH only (config-line)
-line vty 0 4
-no password
-login local
-transport input ssh
-
-!!  SWITCH                          ############ CHAPTER 5 ################
 !! configure Duplex and speed (config-if)#
 duplex full
 speed 100
@@ -164,6 +184,29 @@ show version
 show history
 sho ip [int-id]
 show mac-address-table
+
+!! RSA key deletion (config)
+crypto key zeroize rsa
+!!  SSH key creation (config)
+crypto key generate rsa
+crypto key generate rsa general-keys modulus 1024
+
+!! get SSH info
+show ip ssh
+!! set ssh version
+ip ssh version 2
+
+!!  Add a user  (use 0 for pt password 5 for encrypted password)
+username administrator secret 0 cisco
+username administrator privilege 15 secret 0 cisco
+
+!!  Set Line 0 4 to use SSH only (config-line)
+line vty 0 4
+no password
+login local
+transport input ssh
+
+
 
 
 !!  Port Security (config-if)

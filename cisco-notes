@@ -185,28 +185,19 @@ show history
 sho ip [int-id]
 show mac-address-table
 
-!! RSA key deletion (config)
-crypto key zeroize rsa
-!!  SSH key creation (config)
-crypto key generate rsa
-crypto key generate rsa general-keys modulus 1024
-
-!! get SSH info
+!! Configure SSH
 show ip ssh
-!! set ssh version
 ip ssh version 2
-
-!!  Add a user  (use 0 for pt password 5 for encrypted password)
-username administrator secret 0 cisco
-username administrator privilege 15 secret 0 cisco
-
-!!  Set Line 0 4 to use SSH only (config-line)
-line vty 0 4
+ip domain-name cisco.com
+username administrator secret cisco
+crypto key generate rsa general-keys modulus 1024
+line vty 0 15
 no password
 login local
 transport input ssh
 
-
+!!if you need to clear rsa keys
+crypto key zeroize rsa
 
 
 !!  Port Security (config-if)
@@ -229,7 +220,7 @@ show running-config
 show port-security address
 
 
-!! VLANs                  ###########CHAPTER 6##############
+!!!       ####  CHAPTER 6: VLAN Configuration  ####        !!!
 show vlan brief
 !! (config)
 vlan vlan-id
@@ -320,7 +311,7 @@ no shutdown
 show vlan
 show ip route
 
-!             CHAPTER 7 ACL
+!!!       ####  CHAPTER 7: ACL Configuration  ####        !!!
 !
 ! Access List (config)
 ! any host
@@ -382,7 +373,7 @@ access-list 21 deny any
 
 !! Host Statements before range Statements
 
-!!                         ###  Chapter 8  DHCP   ###
+!!!             ####  Chapter 8  DHCP   ####           !!!
 !!  Exclude ipv4 addresses (config)
 ip dhcp excluded-address 192.168.10.1 192.168.10.9
 ip dhcp excluded-address 192.168.10.254

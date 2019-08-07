@@ -395,3 +395,96 @@ exit
 interface g0/1
 ip nat ouside
 exit
+
+!!!                ### CHAPTER 10 ###                !!!
+!! Enable Cisco Discovery Protocol [CDP]  (config)
+cdp run
+!! Disable CDP
+no cdp run
+!! Verify CDP status
+show cdp
+show cdp neighbors
+show cdp interface
+show cdp neighbors detail
+!! confugure CDP on the interface
+interface G0/1
+cdp enable
+
+!! LLDP configure / verify  (config)
+lldp running
+interface G0/1
+lldp transmit
+lldp receive
+exit
+show lldp
+show lldp neighbors
+show lldp neighbors detail
+
+!! NTP config/verify (config)
+clock timezone PST -8
+Clock summer-time PDT recurring
+show clock detail
+
+ntp server a.b.c.d
+show ntp associations
+show ntp status
+
+!! SYSLOG SEVERITY LEVELS
+Level       Name            Meaning
+  0        Emergency      System Unusable
+  1         Alert           Immediate Action Needed
+  2        Critical       Critical Condition
+  3         error           Error Condition
+  4        Warning         Warning Condition
+  5       notification     Normal but significant Condition
+  6       Informational    Informational Message
+  7         Debugging      Debugging Message
+
+!! Syslog message Timestamps  (config)
+service timestamps log datetime
+
+show logging
+
+logging a.b.c.d
+logging trap 4
+logging source-interface g0/0
+interface loopback 0
+shutdown
+no shutdown
+
+! Verifying Syslog
+show logging
+show logging | include changed state to up
+
+!! File Systems
+show file systems
+dir
+cd nvram:
+pwd
+
+!! File systems FTP Backup
+copy running-config tftp
+  a.b.c.d
+  {filename}
+  [confirm]
+
+!! ROUTER USB PORT
+
+dir usbflash0:
+copy running-config usbflash0:
+dir usbflash0:/
+more usbflash0:/R1-config
+
+!!  PASSWORD Recovery:  1941 ROUTER ROMMON Mode
+! enter ROMMON during boot
+confreg 0x2142
+reset
+
+copy startup-config running-config
+conf t
+enable secret cisco
+config-register 0x2102
+end
+copy running-config startup-config
+
+reload

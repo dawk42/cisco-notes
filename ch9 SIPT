@@ -1,0 +1,144 @@
+Admin-Sw
+
+·        Configure remote management access including IP addressing and SSH:
+o   Domain is cisco.com
+o   User Admin with password letmein
+o   Crypto key length of 1024
+o   SSH version 2, limited to 2 authentication attempts and a 60 second timeout
+    using the following commands:
+          ip ssh version 2
+          ip ssh authentication-retries 2
+          ip ssh time-out 60
+o   Clear text passwords should be encrypted.
+·        Configure, name and assign VLANs. Ports should be manually configured as access ports.
+·        Configure trunking.
+·        Implement port security:
+o   On F0/1, allow 2 MAC addresses that are automatically added to the configuration file when detected. The port should not be disabled, but a syslog message should be captured if a violation occurs.
+o   Disable all other unused ports.
+
+!!! ADMIN-sW
+
+ip domain-name cisco.com
+username Admin privilege 15 secret 0 letmein
+crypto key generate rsa general-keys modulus 1024
+ip ssh version 2
+ip ssh authentication-retries 2
+ip ssh time-out 60
+service password-encryption
+no ip domain-lookup
+
+banner motd #Warning#
+line console 0
+password cisco
+login
+line vty 0 15
+no password
+login local
+transport input ssh
+exit
+
+vlan 15
+name Servers
+
+vlan 30
+name PCs
+
+vlan 45
+name Native
+
+vlan 60
+name Management
+exit
+
+int range f0/1 - 24
+switchport mode access
+shutdown
+exit
+
+int range f0/1 - 10
+switchport access vlan 30
+no shutdown
+
+int range f0/11 - 20
+switchport access vlan 15
+no shutdown
+
+int g0/1
+switchport mode trunk
+switchport non
+switchport trunk native vlan 45
+switchport trunk allowed vlan 15,30,45,60
+
+int vlan 60
+ip address 10.10.10.146 255.255.255.240
+exit
+
+int f0/1
+switchport port-security
+switchport port-security maximum 2
+switchport port-security mac-address sticky
+switchport port-security violation restrict
+
+
+!!!!   ADMIN
+router rip
+version 2
+no auto-summary
+network 10.10.10.0 255.255.255.0
+default-information originate
+passive-interface G0/1
+exit
+
+ip route 0.0.0.0 0.0.0.0 s0/1/0
+
+ip access-list standard 1
+permit 10.10.10.0 0.0.0.255 any
+
+interface g0/0
+shutdown
+
+interface g0/0.15
+encapsulation dot1q 15
+ip address 10.10.10.161 255.255.255.224
+description vlan_15
+
+interface g0/0.30
+encapsulation dot1q 30
+ip address 10.10.10.193 255.255.255.192
+description vlan_30
+
+interface g0/0.45
+encapsulation dot1q 45
+ip address 10.10.10.129 255.255.255.240
+description vlan_45
+
+interface g0/0.60
+encapsulation dot1q 60
+ip address 10.10.10.145 255.255.255.240
+description vlan_60
+
+interface g0/0
+no shutdown
+
+interface S0/0/0
+ip address 10.10.10.117 255.255.255.252
+description Link to Site2
+no shutdown
+
+interface S0/0/1
+ip address 10.10.10.126 255.255.255.252
+description Link to Site5
+no shutdown
+
+interface S0/1/0
+ip address 209.165.202.138 255.255.255.252
+description Link to Internet
+no shutdown
+
+ !!!Configure DHCP services for VLAN 30. Use LAN as the case-sensitive name for the pool.
+ip dhcp excluded-address 10.10.10.193
+ip dhcp pool LAN
+network 10.10.10.193 255.255.255.192
+default-router 10.10.10.193
+!!dns-server 192.168.11.5
+domain-name cisco.com

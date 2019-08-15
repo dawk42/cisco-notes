@@ -191,10 +191,13 @@ ip ssh version 2
 ip domain-name cisco.com
 username administrator secret cisco
 crypto key generate rsa general-keys modulus 1024
+ip ssh time-out 60
+ip ssh authentication-retries 2
 line vty 0 15
 no password
 login local
 transport input ssh
+
 
 !!if you need to clear rsa keys
 crypto key zeroize rsa

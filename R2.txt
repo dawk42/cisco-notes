@@ -1,0 +1,114 @@
+erase startup-config
+crypto key zeroize rsa
+reload
+
+!!!    ####   ROuter 2   ####
+
+enable
+configure terminal
+hostname R2
+enable secret class
+no ip domain-lookup
+service password-encryption
+
+line console 0
+password cisco
+login
+logging synchronous
+line vty 0 15
+password cisco
+login
+logging synchronous
+exit
+banner motd #Unauthorized Access is Prohibited!#
+
+ip route 0.0.0.0 0.0.0.0 G0/0
+ipv6 route ::/0 G0/0
+
+int S0/0/0
+description Link to R1
+ip address 172.16.1.2 255.255.255.252
+ipv6 address 2001:db8:acad:1::2/64
+no shutdown
+
+int S0/0/1
+description Link to
+ip address 172.16.2.2 255.255.255.252
+ipv6 address 2001:db8:acad:2::2/64
+clock rate 128000
+no shutdown
+
+int G0/0
+description Link to Internet
+ip address 209.165.200.232 255.255.255.248
+ipv6 address 2001:db8:acad:a::/64
+no shutdown
+
+int loopback0
+ip address 10.10.10.10 255.255.255.255
+no shutdown
+
+
+!!!   #### PHASE 3 ####   !!!
+
+
+
+
+interface range G0/0 - 1
+shutdown
+
+interface S0/0/1
+shutdown
+
+
+
+
+!interface G0/1.21
+!encapsulation dot1q 21
+!ip address 192.168.21.1 255.255.255.0
+
+!interface G0/1.23
+!encapsulation dot1q 23
+!ip address 192.168.23.1 255.255.255.0
+
+!interface G0/1.99
+!encapsulation dot1q 99
+!ip address 192.168.99.1 255.255.255.0
+
+!interface g0/1
+!no shutdown
+
+!!!   #### PHASE 4 ####   !!!
+
+Enable
+conf
+router RIP
+version 2
+no auto-summary
+network 172.16.1.0
+network 10.10.10.10
+network 172.16.2.0
+network 209.165.200.232
+passive-interface loopback 0
+
+!!!   #### PHASE 5 ####   !!!
+username webuser privilege 15 secret cisco12345
+ip http server
+ip http authentication local
+ip nat inside source static 10.10.10.10 209.165.200.229
+int loopback0
+ip nat in
+int g0/0
+ip nat outside
+access-list 1 permit 192.168.31.0 0.0.0.255
+access-list 1 permit 192.168.33.0 0.0.0.255
+access-list 1 permit 192.168.4.0 0.0.0.255
+ip nat pool INTERNET 209.165.200.225 209.165.200.228 netmask 255.255.255.248
+ip nat inside source list 1 pool INTERNET
+
+!!!  #### PHASE 6 NAT ####   !!!
+clock set hh:mm:ss MMM DD YYYY
+configure t
+ntp master 5
+
+209.165.200.238 /29

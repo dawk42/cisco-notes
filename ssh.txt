@@ -1,0 +1,16 @@
+(config)
+hostname R1
+ip domain-name cisco.com
+crypto key generate rsa general-keys modulus 1024
+ip ssh version 2
+username sshadmin privilege 15 secret cisco
+access-list 22 permit 192.168.21.0 0.0.0.255
+access-list 22 deny any
+ip access-list standard 22
+remark ACL to limit SSH to Vlan 21 traffic
+line vty 15
+access-class 22 in
+login local
+transport input ssh
+transport output ssh
+exec-timeout 5

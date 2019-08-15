@@ -1,0 +1,98 @@
+erase startup-config
+conf t
+crypto key zeroize rsa
+exit
+reload
+
+
+
+
+!! ### router 1
+
+enable
+configure terminal
+hostname R1
+enable secret class
+no ip domain-lookup
+service password-encryption
+
+line console 0
+password cisco
+login
+logging synchronous
+line vty 0 15
+password cisco
+login
+logging synchronous
+exit
+banner motd #Unauthorized Access is Prohibited!#
+
+
+interface range G0/0 - 1
+shutdown
+
+interface S0/0/0
+description Link to R2
+ip address 172.16.1.1 255.255.255.252
+ipv6 address 2001:DB8:ACAD:1::1/64
+clock rate 128000
+no shutdown
+
+interface S0/0/1
+shutdown
+
+ip route 0.0.0.0 0.0.0.0 S0/0/0
+! ipv6 default route
+ipv6 route ::/0 S0/0/0
+
+
+!!!   #### PHASE 3 ####   !!!
+
+interface G0/1.21
+encapsulation dot1q 21
+ip address 192.168.21.1 255.255.255.0
+
+interface G0/1.23
+encapsulation dot1q 23
+ip address 192.168.23.1 255.255.255.0
+
+interface G0/1.99
+encapsulation dot1q 99
+ip address 192.168.99.1 255.255.255.0
+
+interface g0/1
+no shutdown
+
+!!!   #### PHASE 4 ####   !!!
+
+Enable
+conf
+ip route 0.0.0.0 0.0.0.0 serial 0/0/1
+router rip
+version 2
+no auto-summary
+network 192.168.21.0
+network 192.168.23.0
+network 192.168.99.0
+network 172.16.1.0
+passive-interface gigabitEthernet 0/0
+passive-interface gigabitEthernet 0/1
+default-information originate
+
+###PHASE 5######
+ip dhcp excluded-address 192.168.21.1 192.168.21.20
+ip dhcp excluded-address 192.168.23.1 192.168.23.20
+ip dhcp pool ACCT
+network 192.168.21.0 255.255.255.0
+dns-server 10.10.10.10
+domain-name ccna-sa.com
+default-router 192.168.21.1
+ip dhcp pool ENGNR
+network 192.168.23.0 255.255.255.0
+dns-server 10.10.10.10
+domain-name ccna-sa.com
+default-router 192.168.23.1
+
+!!!  #### PHASE 6 NAT ####   !!!
+(config)
+npt server 192.168.99.1

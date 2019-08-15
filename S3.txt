@@ -1,0 +1,62 @@
+erase startup-config
+delete vlan.dat
+crypto key zeroize rsa
+show flash
+reload
+
+!! ### switch 3
+
+enable
+configure terminal
+hostname S3
+enable secret class
+no ip domain-lookup
+service password-encryption
+
+line console 0
+password cisco
+login
+logging synchronous
+line vty 0 15
+password cisco
+login
+logging synchronous
+exit
+banner motd #Unauthorized Access is Prohibited!#
+
+
+!!!   #### PHASE 3 ####   !!!
+vlan 21
+name Accounting
+!int vlan 21
+!ip address 192.168.21.0 255.255.255.0
+
+vlan 23
+name Engineering
+!int vlan 23
+!ip address 192.168.23.0 255.255.255.0
+
+
+vlan 99
+name Management
+int vlan 99
+ip address 192.168.99.3 255.255.255.0
+ex
+ip default-gateway 192.168.99.1
+
+int f0/3
+switchport mode trunk
+switchport non
+switchport trunk native vlan 1
+switchport trunk allowed vlan 21,23,99
+no shutdown
+ex
+
+int f0/18
+switchport mode access
+switchport access vlan 23
+
+int range f0/1 - 2 , f0/4-17 , f0/19 - 24 , g0/1 - 2
+switchport mode access
+shutdown
+ex

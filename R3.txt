@@ -1,0 +1,66 @@
+erase startup-config
+crypto key zeroize rsa
+reload
+
+!!!    ####   ROuter 3   ####
+
+enable
+configure terminal
+hostname R3
+enable secret class
+no ip domain-lookup
+service password-encryption
+
+line console 0
+password cisco
+login
+logging synchronous
+line vty 0 15
+password cisco
+login
+logging synchronous
+exit
+banner motd #Unauthorized Access is Prohibited!#
+
+int S0/0/1
+ip address 172.16.2.1 255.255.255.252
+ipv6 address 2001:db8:acad:2::1/64
+no shutdown
+
+int loopback4
+ip address 192.168.4.0 255.255.255.0
+no shutdown
+
+int loopback5
+ip address 192.168.5.0 255.255.255.0
+no shutdown
+
+int loopback6
+ip address 192.168.6.0 255.255.255.0
+no shutdown
+
+int loopback7
+ipv6 address 2001:db8:acad:3::1/64
+no shutdown
+
+ip route 0.0.0.0 0.0.0.0 S0/0/1
+ipv6 route ::/0 S0/0/1
+
+
+!!!   #### PHASE 3 ####   !!!
+!!!   #### PHASE 4 ####   !!!
+Enable
+conf
+router RIP
+version 2
+no auto-summary
+network 192.168.4.0
+network 192.168.5.0
+network 192.168.6.0
+network 172.16.2.0
+passive-interface loopback 4
+passive-interface loopback 5
+passive-interface loopback 6
+passive-interface loopback 7
+
+!!!   #### PHASE 5 ####   !!!

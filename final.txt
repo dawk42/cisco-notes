@@ -1,0 +1,46 @@
+PC-A
+
+PC-C
+
+S1- 192.168.99.2
+S3- 192.168.99.3
+
+R1- S0
+no ip domain-lookup
+hostname R1
+enable secret class
+line console 0
+password cisco
+login
+logging synchronous
+line vty 0 15
+password cisco
+login
+logging synchronous
+service password-encryption
+banner motd #Unauthorized Access is Prohibited!#
+interface S0/0/0
+ip address 172.16.1.1 255.255.255.252
+ipv6 address
+R2-
+
+S0
+interface S0/0/0
+ip address 172.16.1.2 255.255.255.252
+
+S1
+interface S0/0/1
+ip address 172.16.2.2 255.255.255.252
+
+interface F0/3
+interface F0/5
+switchport mode access
+interface F0/6
+
+R3-
+interface S0/0/1
+ip address 172.16.2.1 255.255.255.252
+interface loopback4 192.168.4.0 255.255.255.0
+interface loopback5 192.168.5.0 255.255.255.0
+interface loopback6 192.168.6.0 255.255.255.0
+interface loopback7 2001:DBA:ACAD:3::1/64

@@ -1,0 +1,54 @@
+########### HQ Router #############
+!!!!!!!!!!!!!!!!!!  BASE CONFIG  !!!!!!!!!!!!!!!!!
+en
+configure terminal
+hostname HQ
+no ip domain-lookup
+enable secret class
+line console 0
+password cisco
+login
+logging synchronous
+line vty 0 15
+password cisco
+login
+logging synchronous
+exit
+banner motd #Unauthorized Access is Prohibited!#
+
+!!!!!!!!!!!!!!!! INTERFACES !!!!!!!!!!!!!!!
+
+interface range S0/0/0 - 1 , G0/0 - 1
+shutdown
+
+interface S0/0/0
+description Link to Branch
+ip address 10.1.1.2 255.255.255.252
+no shutdown
+
+interface g0/0.5
+ip address 192.168.1.1 255.255.255.240
+interface g0/0.10
+ip address 192.168.1.17 255.255.255.240
+interface g0/0.15
+ip address 192.168.1.33 255.255.255.240
+interface g0/0.50
+ip address 192.168.1.49 255.255.255.240
+
+interface g0/0
+no shutdown
+
+interface g0/1
+description Link to SW-Bldg-B-1
+ip address 192.168.2.1 255.255.255.0
+no shutdown
+
+!!!!!!!!!!!!!!!! ROUTING !!!!!!!!!!!!!!!
+router rip
+version 2
+
+network 10.0.0.0
+network 192.168.1.0
+network 192.168.2.0
+
+!!!!!!!!!!!!!!!! VLANS !!!!!!!!!!!!!!!

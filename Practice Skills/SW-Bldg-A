@@ -1,0 +1,58 @@
+########### BLDG A - Switch  #############
+!!!!!!!!!!!!!!!!!!  BASE CONFIG  !!!!!!!!!!!!!!!!!
+en
+configure terminal
+hostname SW-Bldg-A
+no ip domain-lookup
+enable secret class
+line console 0
+password cisco
+login
+logging synchronous
+line vty 0 15
+password cisco
+login
+logging synchronous
+exit
+banner motd #Unauthorized Access is Prohibited!#
+
+
+!!!!!!!!!!!!!!!! VTP !!!!!!!!!!!!!!!
+vtp mode server
+vtp domain CCNA
+vpt password cisco
+
+!!!!!!!!!!!!!!!! VLANS !!!!!!!!!!!!!!!
+VLAN 5
+name OFFICE
+VLAN 10
+name ACCT
+VLAN 15
+name PROD
+VLAN 50
+name ADMIN
+
+!!!!!!!!!!!!!!!! INTERFACES !!!!!!!!!!!!!!!
+
+interface range f0/1 - 24 , f0/1 - 2
+shutdown
+
+int f0/23
+switchport mode trunk
+switchport nonegotiate
+switchport trunk native vlan 50
+switchport trunk allowed vlan 5, 10, 15, 50
+no shutdown
+
+int f0/24
+switchport mode trunk
+switchport nonegotiate
+switchport trunk native vlan 50
+switchport trunk allowed vlan 5, 10, 15, 50
+no shutdown
+
+interface vlan 50
+ip address 192.168.1.50 255.255.255.240
+
+switchport mode trunk
+switchport trunk native vlan 99

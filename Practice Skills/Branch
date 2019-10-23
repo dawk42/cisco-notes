@@ -1,0 +1,47 @@
+########### Branch Router #############
+!!!!!!!!!!!!!!!!!!  BASE CONFIG  !!!!!!!!!!!!!!!!!
+en
+configure terminal
+hostname Branch
+no ip domain-lookup
+enable secret class
+line console 0
+password cisco
+login
+logging synchronous
+line vty 0 15
+password cisco
+login
+logging synchronous
+exit
+banner motd #Unauthorized Access is Prohibited!#
+
+!!!!!!!!!!!!!!!! INTERFACES !!!!!!!!!!!!!!!
+
+interface range S0/0/0 - 1 , G0/0 - 1
+shutdown
+
+interface S0/0/0
+description Link to Web
+ip address 10.1.1.2 255.255.255.252
+clock rate 128000
+no shutdown
+
+interface S0/0/1
+description Link to HQ
+ip address 209.165.200.225 255.255.255.252
+no shutdown
+
+interface g0/0
+description Link to SW-Branch
+ip address 192.168.3.1 255.255.255.0
+no shutdown
+
+!!!!!!!!!!!!!!!! ROUTING !!!!!!!!!!!!!!!
+
+router rip
+version 2
+
+network 209.165.200.224
+network 192.168.3.0
+network 10.1.1.0

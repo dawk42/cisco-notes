@@ -1,0 +1,154 @@
+#S1
+en
+conf t
+
+no ip domain-lookup
+hostname S3
+enable secret class
+service password-encryption
+
+line console 0
+password cisco
+login
+logging synchronous
+line vty 0 15
+password cisco
+login
+logging synchronous
+exit
+banner motd #Warning#
+
+int range f0/1 - 24 , g0/1 - 2
+shutdown
+
+do wr
+
+vlan 10
+name User
+vlan 99
+name Management
+
+int f0/1
+switchport mode trunk
+switchport trunk native vlan 99
+no shutdown
+int F0/3
+switchport mode trunk
+switchport trunk native vlan 99
+no shutdown
+int F0/6
+switchport mode access
+switchport access vlan 10
+no shutdown
+
+int vlan 99
+ip address 192.168.1.11 255.255.255.0
+
+## show vlan brief
+## show interfaces trunk
+## show running-config
+
+
+
+
+
+
+
+####   S2
+en
+conf t
+
+int range f0/1 - 24 , g0/1 - 2
+shutdown
+
+no ip domain-lookup
+hostname S2
+enable secret class
+service password-encryption
+
+line console 0
+password cisco
+login
+logging synchronous
+line vty 0 15
+password cisco
+login
+logging synchronous
+exit
+banner motd #Warning#
+
+do wr
+
+vlan 10
+name User
+vlan 99
+name Management
+
+int F0/1
+switchport mode trunk
+switchport trunk native vlan 99
+no shutdown
+
+int F0/3
+switchport mode trunk
+switchport trunk native vlan 99
+no shutdown
+
+int vlan 99
+ip address 192.168.1.12 255.255.255.0
+
+## show vlan brief
+## show interfaces trunk
+## show running-config
+
+#S3
+en
+conf t
+
+int range f0/1 - 24 , g0/1 - 2
+shutdown
+
+no ip domain-lookup
+hostname S3
+enable secret class
+service password-encryption
+
+line console 0
+password cisco
+login
+logging synchronous
+line vty 0 15
+password cisco
+login
+logging synchronous
+exit
+banner motd #Warning#
+
+do wr
+
+vlan 10
+name User
+vlan 99
+name Management
+
+int F0/1
+switchport mode trunk
+switchport trunk native vlan 99
+no shutdown
+
+int F0/3
+switchport mode trunk
+switchport trunk native vlan 99
+no shutdown
+
+int F0/18
+switchport mode access
+switchport access vlan 10
+no shutdown
+
+int vlan 99
+ip address 192.168.1.13 255.255.255.0
+
+## show vlan brief
+## show interfaces trunk
+## show running-config

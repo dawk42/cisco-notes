@@ -1,0 +1,47 @@
+! S1
+
+no ip domain-lookup
+hostname S1
+
+int range f0/21 - 22 , g0/1 - 2
+switchport mode trunk
+
+int range f0/21 - 22
+channel-group 1 mode desirable
+
+interface port-channel 1
+switchport mode trunk
+
+int range g0/1 - 2
+channel-group 2 mode active
+
+!!  S2
+
+no ip domain-lookup
+hostname S2
+
+int range f0/23 - 24 , g0/1 - 2
+switchport mode trunk
+
+int range g0/1 - 2
+channel-group 2 mode active
+
+int range f0/23 - 24
+channel-group 3 mode passive
+
+!!!  S3
+
+no ip domain-lookup
+hostname S3
+
+int range f0/21 - 24
+switchport mode trunk
+
+int range f0/21 - 22
+channel-group 1 mode desirable
+
+interface port-channel 1
+switchport mode trunk
+
+int range f0/23 - 24
+channel-group 3 mode active

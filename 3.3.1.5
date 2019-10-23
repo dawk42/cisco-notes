@@ -1,0 +1,57 @@
+#S1
+int f0/6
+switchport mode access
+switchport access vlan 30
+no shutdown
+exit
+int range f0/1-4
+switchport mode trunk
+switchport trunk native vlan 99
+
+int vlan 99
+ip address 172.31.99.1 255.255.255.0
+vtp mode client
+vtp domain CCNA
+vpt password cisco
+
+
+#S2
+int f0/18
+switchport mode access
+switchport access vlan 20
+no shutdown
+int range f0/1-4
+switchport mode trunk
+switchport trunk native vlan 99
+exit
+int vlan 99
+ip address 172.31.99.2 255.255.255.0
+vtp mode client
+vtp domain CCNA
+vpt password cisco
+
+
+#S3
+int f0/11
+switchport mode access
+switchport access vlan 10
+no shutdown
+exit
+vtp mode server
+vtp domain CCNA
+vpt password cisco
+vlan 10
+vlan 20
+vlan 30
+vlan 40
+vlan 50
+vlan 60
+vlan 70
+vlan 80
+vlan 99
+
+int vlan 99
+ip address 172.31.99.3 255.255.255.0
+int range f0/1-4
+switchport mode trunk
+switchport trunk native vlan 99

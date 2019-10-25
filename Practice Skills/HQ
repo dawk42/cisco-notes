@@ -27,12 +27,19 @@ ip address 10.1.1.2 255.255.255.252
 no shutdown
 
 interface g0/0.5
+encapsulation dot1q 5
 ip address 192.168.1.1 255.255.255.240
+
 interface g0/0.10
+encapsulation dot1q 10
 ip address 192.168.1.17 255.255.255.240
+
 interface g0/0.15
+encapsulation dot1q 15
 ip address 192.168.1.33 255.255.255.240
+
 interface g0/0.50
+encapsulation dot1q 50
 ip address 192.168.1.49 255.255.255.240
 
 interface g0/0
@@ -51,4 +58,15 @@ network 10.0.0.0
 network 192.168.1.0
 network 192.168.2.0
 
-!!!!!!!!!!!!!!!! VLANS !!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!! SSH !!!!!!!!!!!!!!!
+show ip ssh
+ip ssh version 2
+ip domain-name cisco.com
+username admin secret class
+crypto key generate rsa general-keys modulus 1024
+ip ssh time-out 60
+ip ssh authentication-retries 2
+line vty 0 15
+no password
+login local
+transport input ssh

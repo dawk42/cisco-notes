@@ -26,12 +26,34 @@ vpt password cisco
 interface range f0/1 - 24 , f0/1 - 2
 shutdown
 
+int f0/5
+description Link to OFFICE 2
+switchport mode access
+switchport access vlan 5
+ip address 192.168.1.3 255.255.255.240
+
+int f0/10
+description Link to PROD 2
+switchport mode access
+switchport access vlan 10
+ip address 192.168.1.19 255.255.255.240
+
+int f0/15
+description Link to ACCT 2
+switchport mode access
+switchport access vlan 15
+ip address 192.168.1.34 255.255.255.240
+
+int f0/50
+description Link to ADMIN 2
+switchport mode access
+switchport access vlan 50
+ip address 192.168.1.52 255.255.255.240
+
 int f0/24
+description Link to BLDG A
 switchport mode trunk
 switchport nonegotiate
 switchport trunk native vlan 50
 switchport trunk allowed vlan 5, 10, 15, 50
 no shutdown
-
-interface vlan 50
-ip address 192.168.1.52 255.255.255.240

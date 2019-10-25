@@ -38,6 +38,7 @@ interface range f0/1 - 24 , f0/1 - 2
 shutdown
 
 int f0/23
+description Link to BLDG A 1
 switchport mode trunk
 switchport nonegotiate
 switchport trunk native vlan 50
@@ -45,6 +46,7 @@ switchport trunk allowed vlan 5, 10, 15, 50
 no shutdown
 
 int f0/24
+description Link to BLDG A 2
 switchport mode trunk
 switchport nonegotiate
 switchport trunk native vlan 50
@@ -53,6 +55,3 @@ no shutdown
 
 interface vlan 50
 ip address 192.168.1.50 255.255.255.240
-
-switchport mode trunk
-switchport trunk native vlan 99

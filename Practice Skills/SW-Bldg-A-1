@@ -30,34 +30,51 @@ int f0/5
 description Link to OFFICE 1
 switchport mode access
 switchport access vlan 5
-ip address 192.168.1.2 255.255.255.240
+switchport port-security
+switchport port-security maximum 2
+switchport port-security mac-address sticky
+switchport port-security violation protect
+!ip address 192.168.1.2 255.255.255.240
 
 int f0/10
 description Link to PROD 1
 switchport mode access
 switchport access vlan 10
-ip address 192.168.1.18 255.255.255.240
+switchport port-security
+switchport port-security maximum 2
+switchport port-security mac-address sticky
+switchport port-security violation protect
+switchport port-security mac-address sticky
+!ip address 192.168.1.18 255.255.255.240
 
 int f0/15
 description Link to ACCT 1
 switchport mode access
 switchport access vlan 15
-ip address 192.168.1.33 255.255.255.240
+switchport port-security
+switchport port-security maximum 2
+switchport port-security mac-address sticky
+switchport port-security violation protect
+switchport port-security mac-address sticky
+!ip address 192.168.1.33 255.255.255.240
 
-int f0/50
+int f0/20
 description Link to ADMIN 1
 switchport mode access
 switchport access vlan 50
-ip address 192.168.1.51 255.255.255.240
+switchport port-security
+switchport port-security maximum 2
+switchport port-security mac-address sticky
+switchport port-security violation protect
+switchport port-security mac-address sticky
+!ip address 192.168.1.54 255.255.255.240
 
 int f0/23
 description Link to BLDG A
 switchport mode trunk
-switchport nonegotiate
-switchport trunk native vlan 50
-switchport trunk allowed vlan 5, 10, 15, 50
 no shutdown
-
 
 interface vlan 50
 ip address 192.168.1.51 255.255.255.240
+
+ip default-gateway 192.168.1.49

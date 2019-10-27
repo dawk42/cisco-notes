@@ -57,3 +57,6 @@ switchport nonegotiate
 switchport trunk native vlan 50
 switchport trunk allowed vlan 5, 10, 15, 50
 no shutdown
+
+interface vlan 50
+ip address 192.168.1.52 255.255.255.240

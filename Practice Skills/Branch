@@ -41,7 +41,9 @@ no shutdown
 
 router rip
 version 2
-
-network 209.165.200.224
+passive-interface GigabitEthernet0/0
 network 192.168.3.0
-network 10.1.1.0
+network 10.0.0.0
+default-information originate
+no auto-summary
+ip route 0.0.0.0 0.0.0.0 209.165.200.226

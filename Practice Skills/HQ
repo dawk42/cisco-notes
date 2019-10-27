@@ -53,13 +53,17 @@ no shutdown
 !!!!!!!!!!!!!!!! ROUTING !!!!!!!!!!!!!!!
 router rip
 version 2
-
+no auto-summary
 network 10.0.0.0
 network 192.168.1.0
 network 192.168.2.0
 
+passive-interface GigabitEthernet0/0
+passive-interface GigabitEthernet0/1
+
+ip route 0.0.0.0 0.0.0.0 10.1.1.2
+
 !!!!!!!!!!!!!!!! SSH !!!!!!!!!!!!!!!
-show ip ssh
 ip ssh version 2
 ip domain-name cisco.com
 username admin secret class
@@ -70,3 +74,19 @@ line vty 0 15
 no password
 login local
 transport input ssh
+
+!!!!!!!!!!!!!!!! ACL  !!!!!!!!!!!!!!!!!!
+
+ip access-list standard block15
+deny 192.168.1.32 0.0.0.15
+permit any
+
+!!!!!!!!!!!!!!!! NTP  !!!!!!!!!!!!!!!!!!
+ntp server 192.168.2.10 key 0
+ntp update-calendar
+!!!!!!!!!!!!!!!! Logging !!!!!!!!!!!!!!!!!
+
+service timestamps debug datetime msec
+service timestamps log datetime msec
+logging trap debugging
+logging 192.168.2.10

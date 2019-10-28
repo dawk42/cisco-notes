@@ -17,9 +17,9 @@ logging synchronous
 exit
 banner motd #Unauthorized Access is Prohibited!#
 !!!!!!!!!!!!!!!! VTP !!!!!!!!!!!!!!!
-vtp mode client
-vtp domain CCNA
-vpt password cisco
+no vtp mode client
+no vtp domain CCNA
+no vtp password cisco
 
 !!!!!!!!!!!!!!!! INTERFACES !!!!!!!!!!!!!!!
 
@@ -34,6 +34,7 @@ switchport port-security
 switchport port-security maximum 2
 switchport port-security mac-address sticky
 switchport port-security violation protect
+no shutdown
 !ip address 192.168.1.2 255.255.255.240
 
 int f0/10
@@ -45,6 +46,7 @@ switchport port-security maximum 2
 switchport port-security mac-address sticky
 switchport port-security violation protect
 switchport port-security mac-address sticky
+no shutdown
 !ip address 192.168.1.18 255.255.255.240
 
 int f0/15
@@ -56,6 +58,8 @@ switchport port-security maximum 2
 switchport port-security mac-address sticky
 switchport port-security violation protect
 switchport port-security mac-address sticky
+no shutdown
+
 !ip address 192.168.1.33 255.255.255.240
 
 int f0/20
@@ -67,6 +71,7 @@ switchport port-security maximum 2
 switchport port-security mac-address sticky
 switchport port-security violation protect
 switchport port-security mac-address sticky
+no shutdown
 !ip address 192.168.1.54 255.255.255.240
 
 int f0/23

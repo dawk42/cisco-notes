@@ -18,9 +18,9 @@ banner motd #Unauthorized Access is Prohibited!#
 
 
 !!!!!!!!!!!!!!!! VTP !!!!!!!!!!!!!!!
-vtp mode server
-vtp domain CCNA
-vpt password cisco
+no vtp mode client
+no vtp domain CCNA
+no vtp password cisco
 
 !!!!!!!!!!!!!!!! VLANS !!!!!!!!!!!!!!!
 VLAN 5

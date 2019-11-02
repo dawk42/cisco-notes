@@ -1,8 +1,11 @@
 ########### HQ Router #############
+erase startup-config
+crypto key zeroize rsa
+reload
 !!!!!!!!!!!!!!!!!!  BASE CONFIG  !!!!!!!!!!!!!!!!!
 en
 configure terminal
-hostname HQ
+hostname R3
 no ip domain-lookup
 enable secret class
 line console 0
@@ -32,3 +35,18 @@ interface s0/0/1
 description Link to R2
 ipv6 address 2001:DB8:ACAD:23::3/64
 ipv6 address FE80::1 link-local
+
+!!!!!!!!!!!!!!!! EIGRP for IPV6 !!!!!!!!!!!!!!!
+ipv6 unicast-routing
+ipv6 router eigrp 1
+eigrp router-id 3.3.3.3
+passive-interface default
+no shutdown
+
+!!!!!!!!!!!!!!!! INTERFACES !!!!!!!!!!!!!!!
+interface g0/0
+ipv6 eigrp 1
+interface S0/0/0
+ipv6 eigrp 1
+interface s0/0/1
+ipv6 eigrp 1

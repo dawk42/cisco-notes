@@ -1,0 +1,34 @@
+########### HQ Router #############
+!!!!!!!!!!!!!!!!!!  BASE CONFIG  !!!!!!!!!!!!!!!!!
+en
+configure terminal
+hostname HQ
+no ip domain-lookup
+enable secret class
+line console 0
+password cisco
+login
+logging synchronous
+line vty 0 15
+password cisco
+login
+logging synchronous
+exit
+banner motd #Unauthorized Access is Prohibited!#
+
+!!!!!!!!!!!!!!!! INTERFACES !!!!!!!!!!!!!!!
+interface g0/0
+description Link to PC-C
+ipv6 address 2001:DB8:ACAD:C::1/64
+ipv6 address FE80::1 link-local
+
+interface S0/0/0
+description Link to R1
+clock rate 128000
+ipv6 address 2001:DB8:ACAD:13::3/64
+ipv6 address FE80::1 link-local
+
+interface s0/0/1
+description Link to R2
+ipv6 address 2001:DB8:ACAD:23::3/64
+ipv6 address FE80::1 link-local

@@ -9,18 +9,34 @@ ipv6 unicast-routing
 !!enable EIGRP for ipv6
 ! ROUTER 1
 ipv6 unicast-routing
-ipv6 router eigrp 2
-eigrp router-id 1.0.0.0
+ipv6 router eigrp 1
+eigrp router-id 1.1.1.1
+passive-interface g0/0
 no shutdown
 
 ! ROUTER 2
 ipv6 unicast-routing
-ipv6 router eigrp 2
-eigrp router-id 2.0.0.0
+ipv6 router eigrp 1
+eigrp router-id 2.2.2.2
+passive-interface g0/0
+no shutdown
+
+! ROUTER 3
+ipv6 unicast-routing
+ipv6 router eigrp 1
+eigrp router-id 3.3.3.3
+passive-interface g0/0
 no shutdown
 
 !! interface w/ ipv6 and eigrp
 interface g0/0
-ipv6 eigrp 2
+ipv6 eigrp 1
 exit
 
+!!!!!  Make sure to set passive interfaces
+passive-interface g0/0
+
+
+!! Verify EIGRP and ipv6
+show ipv6 protocols
+show ipv6 route

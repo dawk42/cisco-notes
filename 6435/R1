@@ -1,6 +1,8 @@
 ########### HQ Router #############
 erase startup-config
+config terminal
 crypto key zeroize rsa
+exit 
 reload
 
 !!!!!!!!!!!!!!!!!!  BASE CONFIG  !!!!!!!!!!!!!!!!!
@@ -43,3 +45,11 @@ ipv6 router eigrp 1
 eigrp router-id 1.1.1.1
 passive-interface g0/0
 no shutdown
+
+!!!!!!!!!!!!!!!! INTERFACES !!!!!!!!!!!!!!!
+interface g0/0
+ipv6 eigrp 1
+interface S0/0/0
+ipv6 eigrp 1
+interface s0/0/1
+ipv6 eigrp 1

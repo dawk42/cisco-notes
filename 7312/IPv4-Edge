@@ -1,0 +1,18 @@
+!!!!!!!!!!!!!!!!!!  BASE CONFIG  !!!!!!!!!!!!!!!!!
+en
+configure terminal
+hostname R1
+no ip domain-lookup
+enable secret class
+line console 0
+password cisco
+login
+logging synchronous
+line vty 0 15
+password cisco
+login
+logging synchronous
+exit
+banner motd #Unauthorized Access is Prohibited!#
+
+!!!!!!!!!!!!!!!! INTERFACES !!!!!!!!!!!!!!!

@@ -1,0 +1,39 @@
+!!!!!!!!!!!!!!!!!!  BASE CONFIG  !!!!!!!!!!!!!!!!!
+en
+configure terminal
+hostname R3
+no ip domain-lookup
+enable secret class
+line console 0
+password cisco
+login
+logging synchronous
+line vty 0 15
+password cisco
+login
+logging synchronous
+exit
+banner motd #Unauthorized Access is Prohibited!#
+
+
+
+
+
+!!!!!!!!!!!!!!!! EIGRP for IPV6 !!!!!!!!!!!!!!!
+ipv6 unicast-routing
+ipv6 router eigrp 1
+eigrp router-id 3.3.3.3
+no shutdown
+
+!!!!!!!!!!!!!!!! INTERFACES !!!!!!!!!!!!!!!
+
+interface S0/0/0
+ipv6 eigrp 1
+interface loopback0
+ipv6 eigrp 1
+interface loopback1
+ipv6 eigrp 1
+interface loopback2
+ipv6 eigrp 1
+interface loopback3
+ipv6 eigrp 1

@@ -1,0 +1,36 @@
+conf t
+hostname R2
+enable secret class
+no ip domain lookup
+line con 0
+ password cisco
+ login
+ logging synchronous
+line vty 0 4
+ password cisco
+ login
+banner motd @
+  Unauthorized Access is Prohibited! @
+interface g0/0
+ description R2 LAN Connection
+ ip add 192.168.2.1 255.255.255.0
+ no shutdown
+interface s0/0/0
+ description Serial Link to R1
+ ip add 192.168.12.2 255.255.255.252
+no shutdown
+interface s0/0/1
+ description Serial Link to R3
+ip add 192.168.23.1 255.255.255.252
+no shutdown
+interface lo0
+ ip add 209.165.200.225 255.255.255.252
+ description Connection to ISP
+router eigrp 1
+ router-id 2.2.2.2
+ network 192.168.2.0 0.0.0.255
+ network 192.168.12.0 0.0.0.3 
+ network 192.168.23.0 0.0.0.3 
+ passive-interface g0/0
+ip route 0.0.0.0 0.0.0.0 lo0
+end

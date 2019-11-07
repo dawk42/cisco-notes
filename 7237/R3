@@ -1,0 +1,48 @@
+conf t
+hostname R3
+enable secret class
+no ip domain lookup
+line con 0
+ password cisco
+ login
+ logging synchronous
+line vty 0 4
+ password cisco
+ login
+banner motd @
+  Unauthorized Access is Prohibited! @
+interface lo3
+ description Connection to Branch 33
+ ip add 172.16.33.1 255.255.255.0
+interface lo4
+ description Connection to Branch 34
+ ip add 172.16.34.1 255.255.255.0
+interface lo5
+ description Connection to Branch 35
+ ip add 172.16.35.1 255.255.255.0
+interface lo6
+ description Connection to Branch 36
+ ip add 172.16.36.1 255.255.255.0
+interface g0/0
+ description R3 LAN Connection
+ ip add 192.168.3.1 255.255.255.0
+ no shutdown
+interface s0/0/0
+ description Serial Link to R1
+ ip add 192.168.13.2 255.255.255.252
+no shutdown
+interface s0/0/1
+ description Serial Link to R2
+ip add 192.168.23.2 255.255.255.252
+ no shutdown
+router eigrp 1
+ router-id 3.3.3.3
+ network 192.168.3.0 0.0.0.255 
+ network 192.168.13.0 0.0.0.3 
+ network 192.168.23.0 0.0.0.3 
+ network 172.16.33.0 0.0.0.255
+ network 172.16.34.0 0.0.0.255
+ network 172.16.35.0 0.0.0.255
+ network 172.16.36.0 0.0.0.255
+ passive-interface g0/0
+end

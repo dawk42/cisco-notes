@@ -1,0 +1,50 @@
+en
+conf t
+no ip domain-lookup
+hostname R2
+enable secret class
+line console 0
+password cisco
+login
+logging synchronous
+line vty 0 15
+password cisco
+login
+logging synchronous
+exit
+banner motd #Unauthorized Access is Prohibited!#
+service password-encryption
+
+ipv6 unicast-routing
+
+
+interface G0/0
+description Link to PC-B
+ipv6 address 2001:DB8:ACAD:B::2/64
+ipv6 address FE80::2 link-local
+no shutdown
+
+interface S0/0/0
+description Link to R1
+ipv6 address 2001:DB8:ACAD:12::2/64
+ipv6 address FE80::2 link-local
+no shutdown
+
+interface S0/0/1
+description Link to R3
+clockrate 128000
+ipv6 address 2001:DB8:ACAD:23::2/64
+ipv6 address FE80::2 link-local
+no shutdown
+
+### OSPFv3 Routing ###
+
+ipv6 router ospf 1
+router-id 2.2.2.2
+
+interface G0/0
+ipv6 ospf 1 area 0
+interface S0/0/0
+ipv6 ospf 1 area 0
+interface S0/0/1
+ipv6 ospf 1 area 0

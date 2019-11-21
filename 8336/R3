@@ -1,7 +1,7 @@
 en
 conf t
 no ip domain-lookup
-hostname R2
+hostname R3
 enable secret class
 line console 0
 password cisco
@@ -24,7 +24,7 @@ ipv6 address FE80::3 link-local
 no shutdown
 
 interface S0/0/0
-description Link to R1
+description Link to R1 (DCE)
 clockrate 128000
 ipv6 address 2001:DB8:ACAD:13::3/64
 ipv6 address FE80::3 link-local

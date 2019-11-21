@@ -8,11 +8,14 @@ foreach address {
 2001:DB8:ACAD:C::3
 2001:DB8:ACAD:13::3
 2001:DB8:ACAD:23::3
-}
-{ ping $address }
+2001:DB8:ACAD:A::A
+2001:DB8:ACAD:B::B
+2001:DB8:ACAD:C::C
+} { ping $address }
 
 foreach address {
 2001:DB8:ACAD:A::1
+2001:DB8:ACAD:A::A
 2001:DB8:ACAD:12::1
 2001:DB8:ACAD:13::1
 }
@@ -20,6 +23,7 @@ foreach address {
 
 foreach address {
 2001:DB8:ACAD:B::2
+2001:DB8:ACAD:B::B
 2001:DB8:ACAD:12::2
 2001:DB8:ACAD:23::2
 }
@@ -27,6 +31,7 @@ foreach address {
 
 foreach address {
 2001:DB8:ACAD:C::3
+2001:DB8:ACAD:C::C
 2001:DB8:ACAD:13::3
 2001:DB8:ACAD:23::3
 }

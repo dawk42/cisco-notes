@@ -1,0 +1,40 @@
+#Area 0
+#Area 10
+
+#Router London:
+#OSPFv2 and OSPFv3 Area 0 configuration
+#OSPFv2 and OSPFv3 Area 10 configuration
+#Interface bandwidth configuration
+#OSPFv2 and OSPFv3 router ID configuration
+#Auto-cost reference bandwidth configuration for OSPFv2 and OSPFv3
+en
+config terminal
+ipv6 unicast-routing
+
+router ospf 10
+router-id 10.0.0.0
+
+network 10.10.10.0 0.0.0.3 area 0
+network 172.16.10.0 0.0.0.3 area 10
+network 172.16.10.4 0.0.0.3 area 10
+
+ipv6 router ospf 10
+router-id 10.0.0.0
+
+interface S0/0/0
+description Link to HQ
+bandwidth 128
+ipv6 ospf 10 area 0
+ipv6 ospf network point-to-point
+
+interface S0/0/1
+description Link to East
+bandwidth 200
+ipv6 ospf 10 area 10
+ipv6 ospf network point-to-point
+
+interface S0/1/0
+description Link to West
+bandwidth 200
+ipv6 ospf 10 area 10
+ipv6 ospf network point-to-point

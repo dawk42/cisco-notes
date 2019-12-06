@@ -1,0 +1,22 @@
+#Area 20
+
+#Router East
+#OSPFv2 and OSPFv3 Area 10 configuration
+#OSPFv2 and OSPFv3 router ID configuration
+#Auto-cost reference bandwidth configuration for OSPFv2 and OSPFv3
+#OSPFv2 and OSPFv3 interface priority configuration
+#OSPFv2 and OSPFv3 hello and dead timer configuration
+#OSPFv2 and OSPFv3 passive interface configuration
+en
+config terminal
+ipv6 unicast-routing
+
+G0/0	 192.168.12.1/24
+2001:DB8:12::1/64
+FE80::102 link local
+S0/0/0	 172.16.10.6/30
+2001:DB8:10B::2/64
+FE80::102 link local
+G0/1	 172.16.10.10/30
+2001:DB8:10C::2/64
+FE80::102 link local

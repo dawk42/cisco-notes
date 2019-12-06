@@ -1,0 +1,41 @@
+#Area 0
+#Area 20
+
+#Router Dubai:
+#OSPFv2 and OSPFv3 Area 0 configuration
+#OSPFv2 and OSPFv3 Area 20 configuration
+#Interface bandwidth configuration
+#OSPFv2 and OSPFv3 router ID configuration
+#Auto-cost reference bandwidth configuration for OSPFv2 and OSPFv3
+en
+config terminal
+ipv6 unicast-routing
+
+router ospf 10 area 0
+router-id 20.0.0.0
+network 10.10.20.1 0.0.0.3 area 0
+network 172.16.20.0 0.0.0.3 area 20
+network 172.16.20.4 0.0.0.3 area 20
+
+
+
+ipv6 router ospf 10 area 0
+router-id 20.0.0.0
+
+interface S0/0/0
+description Link to HQ
+bandwidth 128
+ipv6 ospf 10 area 0
+ipv6 ospf network point-to-point
+
+interface S0/0/1
+description Link to Central
+bandwidth 200
+ipv6 ospf 10 area 20
+ipv6 ospf network point-to-point
+
+interface S0/1/0
+description Link to Remote
+bandwidth 200
+ipv6 ospf 10 area 20
+ipv6 ospf network point-to-point

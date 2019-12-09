@@ -1,0 +1,29 @@
+en
+conf t
+no ip domain-lookup
+hostname R3
+
+int g0/1
+description Link to S3
+ip address 172.27.0.3 255.255.255.0
+no shutdown 
+
+int S0/0/1
+description Link to R2
+ip address 172.27.123.6 255.255.255.252
+no shutdown 
+
+int lo4
+description loopback 4 area 3
+ip address 172.27.4.1 255.255.255.0
+no shutdown 
+
+int lo5
+description loopback 4 area 3
+ip address 172.27.5.1 255.255.255.0
+no shutdown 
+
+int lo6
+description loopback 4 area 3
+ip address 172.27.6.1 255.255.255.0
+no shutdown 

@@ -10,14 +10,14 @@ en
 config terminal
 ipv6 unicast-routing
 
-ip route 0.0.0.0 0.0.0.0 S0/0/0
-ipv6 route ::/0 S0/0/0
+ip route 0.0.0.0 0.0.0.0 S0/1/0
+ipv6 route ::/0 S0/1/0
 
-router ospf 10 area 0
+router ospf 10 
 router-id 10.20.0.0
 default-information originate
 
-ipv6 router ospf 10 area 0
+ipv6 router ospf 10 
 router-id 10.20.0.0
 default-information originate
 

@@ -1,0 +1,27 @@
+en
+conf t
+
+no ip domain-lookup
+hostname R1
+int g0/1
+ip address 172.27.0.1 255.255.255.0
+no shutdown
+
+int S0/0/0
+description Link to R2 (DCE)
+ip address 172.27.123.1 255.255.255.252
+clock rate 128000
+no shutdown
+
+int lo0
+description loopback 1 area 1
+ip address 172.27.1.1 255.255.255.0
+no shutdown
+int lo2 
+description loopback 2 area 1
+ip address 172.27.2.1 255.255.255.0
+no shutdown
+int lo3
+description loopback 3 area 1
+ip address 172.27.3.1 255.255.255.0
+no shutdown

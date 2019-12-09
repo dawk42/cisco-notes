@@ -1,0 +1,12 @@
+enable secret class
+line console 0
+password cisco
+login
+logging synchronous
+line vty 0 15
+password cisco
+login
+logging synchronous
+exit
+service password-encryption
+banner motd #Unauthorized Access is Prohibited!#

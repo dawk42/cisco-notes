@@ -1,0 +1,20 @@
+en
+conf t
+no ip domain-lookup
+hostname R2
+
+int s0/0/0
+description Link to R1
+ip address 172.27.123.2 255.255.255.252
+no shutdown
+int s0/0/1
+description Link to R3 (DCE)
+ip address 172.27.123.5 255.255.255.252
+clock rate 128000
+no shutdown
+int lo0 
+description Link to Internet
+ip address 209.165.200.225 255.255.255.248
+no shutdown
+
+route 0.0.0.0 0.0.0.0 lo0

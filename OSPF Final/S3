@@ -1,0 +1,34 @@
+en
+conf t
+no ip domain-lookup
+hostname S3
+ip default-gateway 172.27.0.2
+
+int vlan 1
+ip address 172.27.0.13 255.255.255.0
+
+int f0/1
+description Link to S2
+switchport mode trunk
+int f0/2
+description Link to S2
+switchport mode trunk
+int f0/3
+description Link to S1
+switchport mode trunk
+int f0/4
+description Link to S1
+switchport mode trunk
+int f0/5
+description Link to R3
+switchport mode trunk
+int f0/18
+description Link to PC-C
+
+int range f0/6 - 17
+switchport mode access
+switchport nonegotiate
+
+int range f0/19 - 24
+switchport mode access
+switchport nonegotiate

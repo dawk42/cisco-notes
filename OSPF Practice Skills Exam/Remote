@@ -7,14 +7,26 @@
 #OSPFv2 and OSPFv3 interface priority configuration
 #OSPFv2 and OSPFv3 hello and dead timer configuration
 #OSPFv2 and OSPFv3 passive interface configuration
-
 en
 config terminal
 ipv6 unicast-routing
-interface G0/0	 
-ip address 192.168.22.1 255.255.255.0
-ipv6 address 2001:db8:22::1/64
-FE80::202 link local
-S0/0/0	 172.16.20.6/30
-2001:DB8:20B::2/64
-FE80::202 link local
+
+router ospf 10
+router-id 20.2.2.2
+
+network 192.168.22.0 0.0.0.255 area 20
+network 172.16.20.4 0.0.0.3 area 20
+
+
+ipv6 router ospf 20
+router-id 20.2.2.2
+
+interface G0/0
+
+interface S0/0/0
+description Link to Dubai
+bandwidth 200
+ipv6 ospf 10 area 20
+ipv6 ospf network point-to-point
+
+interface G0/1
